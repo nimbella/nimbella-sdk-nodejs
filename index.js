@@ -85,7 +85,27 @@ async function makeStorageClient(web = false) {
   );
 }
 
+async function makeSqlClient() {
+  const mysql = require('mysql2/promise');
+  if (!process.env.__NIM_SQL_KEY) {
+    throw new Error('Sql credentials are not available');
+  }
+  const creds = JSON.parse(process.env.__NIM_SQL_KEY);
+  return await mysql.createConnection({
+    host: creds.host,
+    user: creds.user,
+    database: creds.database,
+    password: creds.password,
+    ssl: {
+      ca: creds.serverCaCert,
+      cert: creds.clientCert,
+      key: creds.clientKey
+    }
+  });
+}
+
 module.exports = {
   redis: makeRedisClient,
-  storage: makeStorageClient
+  storage: makeStorageClient,
+  mysql: makeSqlClient
 };

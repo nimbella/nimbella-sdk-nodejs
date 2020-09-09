@@ -23,6 +23,10 @@ async function main(args) {
   const bucket = await nim.storage();
   const file = bucket.file('hello.txt'); // Filename
   await file.save('Hello world!'); // Contents
+
+  // Database (MySQL)
+  const db = await nim.mysql(); // Returns a configured mysql2 connection.
+  const [rows, fields] = await db.execute('SELECT * FROM `table`');
 }
 ```
 
