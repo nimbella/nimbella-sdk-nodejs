@@ -45,8 +45,8 @@ function makeRedisClient() {
 // The current contract of makeStorageClientis to return StorageClient handle.
 // This works for all object store implementations.
 function makeStorageClient(web = false) {
-  const creds = process.env['__NIM_STORAGE_KEY'];
-  if (!creds || creds.length == 0) {
+  const rawCreds = process.env['__NIM_STORAGE_KEY'];
+  if (!rawCreds || rawCreds.length == 0) {
     throw new Error('Objectstore credentials are not available');
   }
   const namespace = process.env['__OW_NAMESPACE'];
@@ -58,7 +58,7 @@ function makeStorageClient(web = false) {
   }
   let parsedCreds = undefined;
   try {
-    parsedCreds = JSON.parse(creds);
+    parsedCreds = JSON.parse(rawCreds);
   } catch {
     throw new Error(
       'Objectstore credentials could not be parsed'
