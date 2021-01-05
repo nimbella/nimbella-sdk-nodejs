@@ -42,8 +42,8 @@ function makeRedisClient() {
   return client;
 }
 
-// The current contract of makeStorageClientis to return StorageClient handle.
-// This works for all object store implementations.
+// The current contract of makeStorageClientis to return a StorageClient handle.
+// This works for all object store implementations (currently GCS and S3)
 function makeStorageClient(web = false) {
   const rawCreds = process.env['__NIM_STORAGE_KEY'];
   if (!rawCreds || rawCreds.length == 0) {
@@ -79,7 +79,7 @@ async function legacyMakeStorageClient(web = false) {
   const handle = makeStorageClient(web)
   if ('@nimbella/storage-gcs' in storageProviders) {
     // Not really a foolproof test but will usually screen errors
-    return handle
+    return handle.getImplementation()
   }
   throw new Error('Cannot return a Bucket result because the implementation is not Google Storage')
 }
@@ -105,7 +105,7 @@ async function makeSqlClient() {
 
 module.exports = {
   redis: makeRedisClient,
-  // Legacy function, returns Promise<Bucket>:
+  // Legacy function, returns Promise<Bucket>
   storage: legacyMakeStorageClient,
   // New version of the function, returns the more abstract type StorageClient
   storageClient: makeStorageClient,
