@@ -16,6 +16,7 @@
 
 var redis = require('redis');
 var bluebird = require('bluebird');
+const storageProviders = {}
 
 function makeRedisClient() {
   bluebird.promisifyAll(redis.RedisClient.prototype);
@@ -41,48 +42,46 @@ function makeRedisClient() {
   return client;
 }
 
-async function makeStorageClient(web = false) {
-  let StorageClass = undefined;
-  try {
-    const {Storage} = require('@google-cloud/storage');
-    StorageClass = Storage;
-  } catch (err) {
-    throw new Error(
-      'No object store client is available in this action runtime'
-    );
-  }
-  const creds = process.env['__NIM_STORAGE_KEY'];
-  if (!creds || creds.length == 0) {
+// The current contract of makeStorageClientis to return a StorageClient handle.
+// This works for all object store implementations (currently GCS and S3)
+function makeStorageClient(web = false) {
+  const rawCreds = process.env['__NIM_STORAGE_KEY'];
+  if (!rawCreds || rawCreds.length == 0) {
     throw new Error('Objectstore credentials are not available');
   }
   const namespace = process.env['__OW_NAMESPACE'];
   const apiHost = process.env['__OW_API_HOST'];
   if (!namespace || !apiHost) {
     throw new Error(
-      'Not enough information in the environment to determine the object store bucket name'
+      'Not enough information in the environment to build an object store client'
     );
   }
-  const hostpart = apiHost.replace('https://', '').split('.').join('-');
-  const datapart = web ? '' : 'data-';
-  const bucket = `gs://${datapart}${namespace}-${hostpart}`;
   let parsedCreds = undefined;
   try {
-    parsedCreds = JSON.parse(creds);
-  } catch {}
-  if (parsedCreds) {
-    const {client_email, project_id, private_key} = parsedCreds;
-    if (client_email && project_id && private_key) {
-      const storageOptions = {
-        project_id,
-        credentials: {client_email, private_key}
-      };
-      const storage = new StorageClass(storageOptions);
-      return storage.bucket(bucket); // a promise, since the function is async
-    }
+    parsedCreds = JSON.parse(rawCreds);
+  } catch {
+    throw new Error(
+      'Object store credentials could not be parsed'
+    );
   }
-  throw new Error(
-    'Insufficient information in provided credentials or credentials were invalid'
-  );
+  const provider = parsedCreds.provider || '@nimbella/storage-gcs'
+  let providerImpl = storageProviders[provider]
+  if (!providerImpl) {
+    providerImpl = require(provider).default
+    storageProviders[provider] = providerImpl
+  }
+  const creds = providerImpl.prepareCredentials(parsedCreds)
+  return providerImpl.getClient(namespace, apiHost, web, creds)
+}
+
+// The legacy behavior of makeStorageClient is defined only for Google cloud storage
+async function legacyMakeStorageClient(web = false) {
+  const handle = makeStorageClient(web)
+  if ('@nimbella/storage-gcs' in storageProviders) {
+    // Not really a foolproof test but will usually screen errors
+    return handle.getImplementation()
+  }
+  throw new Error('Cannot return a Bucket result because the implementation is not Google Storage')
 }
 
 async function makeSqlClient() {
@@ -106,6 +105,9 @@ async function makeSqlClient() {
 
 module.exports = {
   redis: makeRedisClient,
-  storage: makeStorageClient,
+  // Legacy function, returns Promise<Bucket>
+  storage: legacyMakeStorageClient,
+  // New version of the function, returns the more abstract type StorageClient
+  storageClient: makeStorageClient,
   mysql: makeSqlClient
 };
