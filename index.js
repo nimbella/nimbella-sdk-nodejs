@@ -61,7 +61,7 @@ function makeStorageClient(web = false) {
     parsedCreds = JSON.parse(rawCreds);
   } catch {
     throw new Error(
-      'Objectstore credentials could not be parsed'
+      'Object store credentials could not be parsed'
     );
   }
   const provider = parsedCreds.provider || '@nimbella/storage-gcs'
