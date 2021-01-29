@@ -1,6 +1,6 @@
 {
   "name": "@nimbella/sdk",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A Node.js library to interact with nimbella.com services.",
   "main": "index.js",
   "license": "Apache-2.0",
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/nimbella/nimbella-sdk-nodejs",
   "dependencies": {
     "@nimbella/storage-gcs": "0.0.6",
-    "@nimbella/storage-s3": "0.0.4",
+    "@nimbella/storage-s3": "0.0.8",
     "bluebird": "^3.7.2",
     "mysql2": "^2.1.0",
     "redis": "^3.0.2"
