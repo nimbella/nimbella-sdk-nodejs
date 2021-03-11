@@ -36,7 +36,7 @@ function makeRedisClient() {
   }
   client.auth(redisPassword, function (err, reply) {
     if (err) {
-      throw new Error('Error authenticaing redis client' + reply);
+      throw new Error('Error authenticating redis client' + reply);
     }
   });
   return client;
@@ -47,7 +47,7 @@ function makeRedisClient() {
 function makeStorageClient(web = false) {
   const rawCreds = process.env['__NIM_STORAGE_KEY'];
   if (!rawCreds || rawCreds.length == 0) {
-    throw new Error('Objectstore credentials are not available');
+    throw new Error('Object store credentials are not available');
   }
   const namespace = process.env['__OW_NAMESPACE'];
   const apiHost = process.env['__OW_API_HOST'];
