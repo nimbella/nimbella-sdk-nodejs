@@ -16,7 +16,7 @@
 
 var redis = require('redis');
 var bluebird = require('bluebird');
-const storageProviders = {}
+const { getStorageProvider } = require('@nimbella/storage');
 
 function makeRedisClient() {
   bluebird.promisifyAll(redis.RedisClient.prototype);
@@ -65,11 +65,7 @@ function makeStorageClient(web = false) {
     );
   }
   const provider = parsedCreds.provider || '@nimbella/storage-gcs'
-  let providerImpl = storageProviders[provider]
-  if (!providerImpl) {
-    providerImpl = require(provider).default
-    storageProviders[provider] = providerImpl
-  }
+  const providerImpl = getStorageProvider(provider)
   const creds = providerImpl.prepareCredentials(parsedCreds)
   return providerImpl.getClient(namespace, apiHost, web, creds)
 }
