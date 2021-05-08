@@ -99,11 +99,33 @@ async function makeSqlClient() {
   });
 }
 
+
+function makeSqliteClient() {
+  function Redisqlite(redis) {
+    this.redis = redis
+  }
+  Redisqlite.prototype.query = function(sql, callback) {
+    if(!Array.isArray(sql))
+      sql = [sql]
+    redis.send_command("SQL", sql, callback)
+  }
+  Redisqlite.prototype.exec = function(sql, callback) {
+    if(!Array.isArray(sql))
+      sql = [sql]
+    redis.send_command("SQLEXEC", sql, callback)
+  }
+  bluebird.promisifyAll(Redisqlite.prototype)
+
+  let client = makeRedisClient()
+  return Redisqlite(client)
+}
+
 module.exports = {
   redis: makeRedisClient,
   // Legacy function, returns Promise<Bucket>
   storage: legacyMakeStorageClient,
   // New version of the function, returns the more abstract type StorageClient
   storageClient: makeStorageClient,
-  mysql: makeSqlClient
+  mysql: makeSqlClient,
+  sqlite: makeSqliteClient
 };
