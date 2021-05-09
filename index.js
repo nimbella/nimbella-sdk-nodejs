@@ -96,25 +96,26 @@ async function makeSqlClient() {
   });
 }
 
+function Redisqlite(redis) {
+  this.redis = redis
+}
+
+Redisqlite.prototype.query = function(sql, callback) {
+  if(!Array.isArray(sql))
+    sql = [sql]
+  this.redis.send_command("SQL", sql, callback)
+}
+
+Redisqlite.prototype.exec = function(sql, callback) {
+  if(!Array.isArray(sql))
+    sql = [sql]
+  this.redis.send_command("SQLEXEC", sql, callback)
+}
 
 function makeSqliteClient() {
-  function Redisqlite(redis) {
-    this.redis = redis
-  }
-  Redisqlite.prototype.query = function(sql, callback) {
-    if(!Array.isArray(sql))
-      sql = [sql]
-    redis.send_command("SQL", sql, callback)
-  }
-  Redisqlite.prototype.exec = function(sql, callback) {
-    if(!Array.isArray(sql))
-      sql = [sql]
-    redis.send_command("SQLEXEC", sql, callback)
-  }
   bluebird.promisifyAll(Redisqlite.prototype)
-
   let client = makeRedisClient()
-  return Redisqlite(client)
+  return new Redisqlite(client)
 }
 
 module.exports = {
