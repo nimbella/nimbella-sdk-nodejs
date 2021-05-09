@@ -17,6 +17,7 @@
 var redis = require('redis');
 var bluebird = require('bluebird');
 const { getStorageProvider } = require('@nimbella/storage');
+var Redisqlite = require("./redisqlite.js")
 
 function makeRedisClient() {
   bluebird.promisifyAll(redis.RedisClient.prototype);
@@ -29,7 +30,7 @@ function makeRedisClient() {
   if (!redisPassword || redisPassword.length == 0) {
     throw new Error('Key-Value store password is not available');
   }
-  const redisParam = {port: 6379, host: redisHost};
+  const redisParam = { port: 6379, host: redisHost };
   const client = redis.createClient(redisParam);
   if (client == null) {
     throw new Error('Error creating redis client');
@@ -99,21 +100,6 @@ async function makeSqlClient() {
   });
 }
 
-function Redisqlite(redis) {
-  this.redis = redis
-}
-
-Redisqlite.prototype.query = function(sql, callback) {
-  if(!Array.isArray(sql))
-    sql = [sql]
-  this.redis.send_command("SQL", sql, callback)
-}
-
-Redisqlite.prototype.exec = function(sql, callback) {
-  if(!Array.isArray(sql))
-    sql = [sql]
-  this.redis.send_command("SQLEXEC", sql, callback)
-}
 
 function makeSqliteClient() {
   bluebird.promisifyAll(Redisqlite.prototype)
