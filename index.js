@@ -70,14 +70,11 @@ function makeStorageClient(web = false) {
   return providerImpl.getClient(namespace, apiHost, web, creds)
 }
 
-// The legacy behavior of makeStorageClient is defined only for Google cloud storage
+// Legacy storage client that used to only support Google Cloud Storage.
+// This now supports any provider depending on the storage credentials.
 async function legacyMakeStorageClient(web = false) {
   const handle = makeStorageClient(web)
-  if ('@nimbella/storage-gcs' in storageProviders) {
-    // Not really a foolproof test but will usually screen errors
-    return handle.getImplementation()
-  }
-  throw new Error('Cannot return a Bucket result because the implementation is not Google Storage')
+  return handle.getImplementation()
 }
 
 async function makeSqlClient() {
