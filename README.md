@@ -27,6 +27,36 @@ async function main(args) {
   // Database (MySQL)
   const db = await nim.mysql(); // Returns a configured mysql2 connection.
   const [rows, fields] = await db.execute('SELECT * FROM `table`');
+
+  // Embedded Database (Sqlite)
+  const sql = nim.sqlite()
+  // execute a statement 
+  // it returns [lastId, changedRows] where relevant 
+  let res = await sql.exec("create table t(i int)")
+  // execute a parametric statement with parameters
+  res = await sql.exec(["insert into t(i) values(?)",1])
+  // execute a query, returns an array of objects
+  // each object corresponds to a record: [{i:1},{i:2}] 
+  let m = await sql.map("select * from t")
+  // you can also pass parameters 
+  // and limit the number of returned elements
+  m = await sql.map(["select * from t where i >?",],1) // [{i:1}]
+  // execute a query, returns an array of arrays
+  // each array corresponds to record values: [[1],[2]] 
+  let m = await sql.map("select * from t")
+  // you can also pass parameters 
+  // and limit the number of returned elements
+  m = await sql.map(["select * from t where i >?",],1) // [[1]]
+  // you can prepare statements
+  let ins = await sql.prep("insert into t(i) values(?)")
+  let sel = await sql.prep("select * from t where i>?")
+  // the returned value is a number and can be used to execute 
+  res = await sql.exec([ins,1])
+  m = await sql.map([sel,1],1)
+  // when you do not need any more close the statement 
+  // running prep again with the returned value
+  await sql.prep(ins)
+  await sql.prep(sel)
 }
 ```
 
