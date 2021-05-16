@@ -102,7 +102,6 @@ async function makeSqlClient() {
 
 
 function makeSqliteClient() {
-  bluebird.promisifyAll(Redisqlite.prototype)
   let client = makeRedisClient()
   return new Redisqlite(client)
 }

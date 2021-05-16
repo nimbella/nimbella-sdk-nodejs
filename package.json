@@ -28,5 +28,11 @@
     "bluebird": "^3.7.2",
     "mysql2": "^2.1.0",
     "redis": "^3.0.2"
+  },
+  "scripts":{
+    "start": "docker run -d -p 6379:6379  --rm --name redisqlite redisqlite --requirepass password",
+    "test": "jest",
+    "stop": "docker kill redisqlite"
   }
+
 }
