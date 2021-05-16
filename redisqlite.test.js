@@ -117,5 +117,8 @@ test("prepared", async () => {
     //console.log(a)
     expect(a).toStrictEqual([ [ 'a' ] ])
 
-  
+    // todo unprep
+    //await sql.prep(ins)
+    //await sql.prep(set)
+
 })
