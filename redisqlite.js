@@ -42,15 +42,15 @@ Redisqlite.prototype.prep = function (sql) {
             function (err, res) {
                 if (err)
                     reject(err)
-                else
-                    resolve(JSON.parse(res))
+                else 
+                    resolve(res)
             })
     })
 }
 
 Redisqlite.prototype.map = function (sql, count) {
     if(count === undefined)
-      count = 0
+        count = 0
     if (!Array.isArray(sql))
         sql = [sql]
     sql.unshift(count)

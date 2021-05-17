@@ -113,12 +113,20 @@ test("prepared", async () => {
     //console.log(m)
     expect(m).toStrictEqual([ { s: 'a' }, { s: 'b' } ])
 
-    let a= await sql.list([sel, 3],1)
+    let a = await sql.list([sel, 3],1)
     //console.log(a)
     expect(a).toStrictEqual([ [ 'a' ] ])
 
     // todo unprep
-    //await sql.prep(ins)
-    //await sql.prep(set)
+    let ok = await sql.prep(sel)
+    expect(ok).toBe('OK')
+    await sql.prep(ins)
+    sql.prep(sel).catch(e => expect(e.message).toBe('invalid prepared statement index'))
+})
 
+test("errors", async() => {
+    sql.exec("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
+    sql.prep("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
+    sql.map("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
+    sql.list("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
 })
