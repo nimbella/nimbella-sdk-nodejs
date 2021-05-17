@@ -29,10 +29,9 @@
     "mysql2": "^2.1.0",
     "redis": "^3.0.2"
   },
-  "scripts":{
-    "start": "docker run -d -p 6379:6379  --rm --name redisqlite redisqlite --requirepass password",
-    "test": "jest",
+  "scripts": {
+    "start": "docker run -d -p 6379:6379  --rm --name redisqlite sciabarracom/redisqlite:1.0.2 --requirepass password",
+    "test": "npm run start ; jest ; npm run stop",
     "stop": "docker kill redisqlite"
   }
-
 }
