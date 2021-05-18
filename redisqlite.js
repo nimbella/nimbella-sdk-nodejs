@@ -66,7 +66,7 @@ Redisqlite.prototype.map = function (sql, count) {
     })
 }
 
-Redisqlite.prototype.list = function (sql, count) {
+Redisqlite.prototype.arr = function (sql, count) {
     if(count === undefined)
        count = 0
     if (!Array.isArray(sql))

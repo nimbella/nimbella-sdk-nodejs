@@ -43,10 +43,10 @@ async function main(args) {
   m = await sql.map(["select * from t where i >?",],1) // [{i:1}]
   // execute a query, returns an array of arrays
   // each array corresponds to record values: [[1],[2]] 
-  let m = await sql.map("select * from t")
+  let m = await sql.arr("select * from t")
   // you can also pass parameters 
   // and limit the number of returned elements
-  m = await sql.map(["select * from t where i >?",],1) // [[1]]
+  m = await sql.arr(["select * from t where i >?",],1) // [[1]]
   // you can prepare statements
   let ins = await sql.prep("insert into t(i) values(?)")
   let sel = await sql.prep("select * from t where i>?")

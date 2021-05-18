@@ -52,15 +52,15 @@ test("basic", async () => {
     //console.log(m)
     expect(m2).toStrictEqual([{i:1},{i:2}])
 
-    let a = await sql.list("select * from t")
+    let a = await sql.arr("select * from t")
     //console.log(a)
     expect(a).toStrictEqual([[1],[2],[3]])
 
-    let a1 = await sql.list("select * from t",1)
+    let a1 = await sql.arr("select * from t",1)
     //console.log(a)
     expect(a1).toStrictEqual([[1]])
 
-    let a2 = await sql.list("select * from t",2)
+    let a2 = await sql.arr("select * from t",2)
     //console.log(a)
     expect(a2).toStrictEqual([[1],[2]])
 
@@ -84,11 +84,11 @@ test("with args", async () => {
     //console.log(m)
     expect(m1).toStrictEqual([{i:2}])
 
-    let a = await sql.list(["select * from t where i<?",3])
+    let a = await sql.arr(["select * from t where i<?",3])
     //console.log(a)
     expect(a).toStrictEqual([[1],[2]])
 
-    let a1 = await sql.list(["select * from t where i<?",3],1)
+    let a1 = await sql.arr(["select * from t where i<?",3],1)
     //console.log(a)
     expect(a1).toStrictEqual([[1]])
 })
@@ -113,7 +113,7 @@ test("prepared", async () => {
     //console.log(m)
     expect(m).toStrictEqual([ { s: 'a' }, { s: 'b' } ])
 
-    let a = await sql.list([sel, 3],1)
+    let a = await sql.arr([sel, 3],1)
     //console.log(a)
     expect(a).toStrictEqual([ [ 'a' ] ])
 
@@ -128,5 +128,5 @@ test("errors", async() => {
     sql.exec("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
     sql.prep("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
     sql.map("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
-    sql.list("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
+    sql.arr("xxx").catch(e => expect(e.message).toBe('near "xxx": syntax error'))
 })
