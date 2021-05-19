@@ -17,7 +17,7 @@
 var redis = require('redis');
 var bluebird = require('bluebird');
 const { getStorageProvider } = require('@nimbella/storage');
-var Redisqlite = require("./redisqlite.js")
+const Redisqlite = require("./redisqlite.js")
 
 function makeRedisClient() {
   bluebird.promisifyAll(redis.RedisClient.prototype);

@@ -21,7 +21,7 @@ function Redisqlite(redis) {
 Redisqlite.prototype.exec = function (sql) {
     if (!Array.isArray(sql))
         sql = [sql]
-    var redis = this.redis
+    const redis = this.redis
     return new Promise(function (resolve, reject) {
         redis.send_command("SQLEXEC", sql,
             function (err, res) {
@@ -34,7 +34,7 @@ Redisqlite.prototype.exec = function (sql) {
 }
 
 Redisqlite.prototype.prep = function (sql) {
-    var redis = this.redis
+    const redis = this.redis
     if (!Array.isArray(sql))
         sql = [sql]
     return new Promise(function (resolve, reject) {
@@ -54,7 +54,7 @@ Redisqlite.prototype.map = function (sql, count) {
     if (!Array.isArray(sql))
         sql = [sql]
     sql.unshift(count)
-    var redis = this.redis
+    const redis = this.redis
     return new Promise(function (resolve, reject) {
         redis.send_command("SQLMAP", sql,
             function (err, res) {
@@ -68,11 +68,11 @@ Redisqlite.prototype.map = function (sql, count) {
 
 Redisqlite.prototype.list = function (sql, count) {
     if(count === undefined)
-       count = 0
+        count = 0
     if (!Array.isArray(sql))
         sql = [sql]
     sql.unshift(count)
-    var redis = this.redis
+    const redis = this.redis
     return new Promise(function (resolve, reject) {
         redis.send_command("SQLARR", sql,
             function (err, res) {
