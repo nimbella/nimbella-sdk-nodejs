@@ -43,7 +43,7 @@ m = await sql.map(["select * from t where i >?",],1)
 
 Result: `[{i:1}]`
 
-# `arr(args [,limit])`, `args` either string or array, `limit` a number`
+# `arr(args [,limit])`, `args` either string or array, `limit` a number
 
 You can execute a query, getting an array of arrays.
 Each element in the array corresponds to an array of the record values.
