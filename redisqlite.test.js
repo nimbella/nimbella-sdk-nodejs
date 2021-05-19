@@ -35,15 +35,15 @@ test("basic", async () => {
     let res = await sql.exec("create table t(i int)")
     //console.log(res)
     expect(res.length).toBe(2)
-    
+
     let ins = await sql.exec("insert into t(i) values(1),(2),(3)")
     //console.log(ins[0],typeof(ins[0]), ins[1], typeof(ins[1]))
     expect(ins).toStrictEqual([3,3])
-    
+
     let m = await sql.map("select * from t")
     //console.log(m)
     expect(m).toStrictEqual([{i:1},{i:2},{i:3}])
- 
+
     let m1 = await sql.map("select * from t", 1)
     //console.log(m)
     expect(m1).toStrictEqual([{i:1}])
@@ -71,11 +71,11 @@ test("with args", async () => {
     let res = await sql.exec("create table t(i int)")
     //console.log(res)
     expect(res.length).toBe(2)
-    
+
     let ins = await sql.exec(["insert into t(i) values(?),(?),(?)",1,2,3])
     //console.log(ins[0],typeof(ins[0]), ins[1], typeof(ins[1]))
     expect(ins).toStrictEqual([3,3])
-    
+
     let m = await sql.map(["select * from t where i>?",1])
     //console.log(m)
     expect(m).toStrictEqual([{i:2},{i:3}])
@@ -96,7 +96,7 @@ test("with args", async () => {
 test("prepared", async () => {
 
     await sql.exec("create table t(i int, s varchar)")
-    
+
     let sel = await sql.prep("select s from t where i <?")
     //console.log(ins)
     expect(typeof sel).toBe('number')

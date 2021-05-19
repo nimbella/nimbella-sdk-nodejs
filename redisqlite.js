@@ -42,7 +42,7 @@ Redisqlite.prototype.prep = function (sql) {
             function (err, res) {
                 if (err)
                     reject(err)
-                else 
+                else
                     resolve(res)
             })
     })
