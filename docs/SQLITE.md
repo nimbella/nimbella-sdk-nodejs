@@ -8,7 +8,7 @@ const sql = nim.sqlite()
 
 Available methods are:
 
-## `exec(args)` args either string or array 
+- `exec(args)` args either string or array 
 
 You can  execute a statement:
 
@@ -25,7 +25,7 @@ You can also execute a parametric statement and specify parameters passing an ar
 res = await sql.exec(["insert into t(i) values(?)",1])
 ```
 
-## `map(args [,limit])`, `args` either string or array, `limit` a number
+- `map(args [,limit])`, `args` either string or array, `limit` a number
 
 You can execute a query, getting  an array of objects.
 
@@ -43,7 +43,7 @@ m = await sql.map(["select * from t where i >?",],1)
 
 Result: `[{i:1}]`
 
-# `arr(args [,limit])`, `args` either string or array, `limit` a number
+- `arr(args [,limit])`, `args` either string or array, `limit` a number
 
 You can execute a query, getting an array of arrays.
 Each element in the array corresponds to an array of the record values.
@@ -60,7 +60,7 @@ m = await sql.map(["select * from t where i >?",],1)
 ```
 Result: `[[1]]`
 
-## `prep(arg)` where `arg` is either a string or a numer  
+- `prep(arg)` where `arg` is either a string or a numer  
 
 You can prepare statements to save time from precompiling.
 

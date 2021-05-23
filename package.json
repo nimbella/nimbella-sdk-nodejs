@@ -30,7 +30,7 @@
     "redis": "^3.0.2"
   },
   "scripts": {
-    "start": "docker run -d -p 6379:6379  --rm --name redisqlite sciabarracom/redisqlite:1.0.2 --requirepass password",
+    "start": "docker run -d -p 6379:6379  --rm --name redisqlite sciabarracom/redisqlite:v1.0.4 --requirepass password",
     "test": "npm run start ; jest ; npm run stop",
     "stop": "docker kill redisqlite"
   }
