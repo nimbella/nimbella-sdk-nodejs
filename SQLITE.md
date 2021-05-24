@@ -1,9 +1,10 @@
-# Embedded SQL Database (Sqlite)
+# Embedded SQL Database 
 
 You can access embedded sql with:
   
 ```
-const sql = nim.sqlite()
+let nim = require("@nimbella/sdk")
+const sql = nim.esql()
 ```
 
 Available methods are:
@@ -82,3 +83,5 @@ When you do not need any more you can close the statement running prep again wit
 await sql.prep(ins)
 await sql.prep(sel)
 ```
+
+Note that you can prepare up to 10000 statement at the same time without closing them, otherwise you will get an error `too many prepared statement`. In the unfortunate accident you fill the cache, you can clear it with `prep("clean_prep_cache")`

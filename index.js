@@ -110,5 +110,5 @@ module.exports = {
   // New version of the function, returns the more abstract type StorageClient
   storageClient: makeStorageClient,
   mysql: makeSqlClient,
-  sqlite: makeSqliteClient
+  esql: makeSqliteClient
 };

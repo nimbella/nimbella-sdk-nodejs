@@ -19,7 +19,7 @@ var sql
 beforeAll(async () => {
     process.env['__NIM_REDIS_IP'] = '127.0.0.1'
     process.env['__NIM_REDIS_PASSWORD'] = 'password'
-    sql = require('./index.js').sqlite()
+    sql = require('./index.js').esql()
 })
 
 beforeEach(async () => {

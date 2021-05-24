@@ -33,7 +33,7 @@ async function main(args) {
 }
 ```
 
-Check [sqlite](docs/SQLITE.md) for SQLite api documentation.
+Check [esql](SQLITE.md) for Embedded SQL api documentation.
 
 ## Support
 
