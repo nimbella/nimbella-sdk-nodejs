@@ -13,7 +13,8 @@
     "lambda"
   ],
   "files": [
-    "index.js"
+    "index.js",
+    "redisqlite.js"
   ],
   "repository": {
     "type": "git",
