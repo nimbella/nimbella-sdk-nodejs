@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/nimbella/nimbella-sdk-nodejs",
   "dependencies": {
-    "@nimbella/storage": "^0.0.6",
+    "@nimbella/storage": "^0.0.7",
     "bluebird": "^3.7.2",
     "mysql2": "^2.1.0",
     "redis": "^3.0.2"
