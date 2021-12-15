@@ -27,8 +27,13 @@ async function main(args) {
   // Database (MySQL)
   const db = await nim.mysql(); // Returns a configured mysql2 connection.
   const [rows, fields] = await db.execute('SELECT * FROM `table`');
+
+  // Embedded Database (SQLite) 
+  const sql = nim.sqlite()
 }
 ```
+
+Check [esql](SQLITE.md) for Embedded SQL api documentation.
 
 ## Support
 
